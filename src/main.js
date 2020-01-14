@@ -4,6 +4,9 @@ import router from './router'
 import store from './store'
 import 'normalize.css'
 import './plugins/element.js'
+import http from './utils/http'
+
+Vue.prototype.$http = http
 
 Vue.config.productionTip = false
 

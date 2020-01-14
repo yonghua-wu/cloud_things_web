@@ -13,8 +13,8 @@
               </div>
               <el-input class="margin-bottom" placeholder="邮箱" v-model.trim="email" clearable autofocus="true" maxlength="80"></el-input>
               <el-input class="margin-bottom" placeholder="密码" v-model.trim="password" show-password maxlength="16"></el-input>
-              <el-input class="margin-bottom" placeholder="确认密码" v-model.trim="againPassword" show-password maxlength="16"></el-input>
-              <el-button type="primary" class="button" @click="register">注册</el-button>
+              <el-input class="margin-bottom" placeholder="确认密码" v-model.trim="againPassword" show-password maxlength="16" @keyup.enter.native="register"></el-input>
+              <el-button type="primary" class="button" @click="register" :loading="loading">{{loading?'注册中':'注册'}}</el-button>
             </el-card>
           </el-col>
         </el-row>
@@ -29,7 +29,8 @@ export default {
     return {
       email: '',
       password: '',
-      againPassword: ''
+      againPassword: '',
+      loading: false
     }
   },
   methods: {
@@ -66,6 +67,44 @@ export default {
         });
         return
       }
+      let data = {
+        email: this.email,
+        password: this.password
+      }
+      this.loading = true
+      this.$http.sso.post('/user', data).then( res => {
+        // eslint-disable-next-line
+        console.log('normal', res)
+        if (res.status === 201) {
+          this.$message({
+            message: `账户（${res.data.email}）创建成功`,
+            type: 'success'
+          });
+          setTimeout(() => {
+            this.$router.push('login')
+          }, 3000);
+        } else {
+          this.$message({
+            showClose: true,
+            message: `账户创建失败（${res.status}）`,
+            type: 'error'
+          })
+        }
+        setTimeout(() => {
+          this.loading = false
+        }, 3000);
+      }).catch( err => {
+        setTimeout(() => {
+          this.loading = false
+        }, 3000);
+        if (err && err.response && err.response.status === 409) {
+          this.$message({
+            message: '账户已存在',
+            type: 'error'
+          });
+          return
+        }
+      })
     }
   }
 }

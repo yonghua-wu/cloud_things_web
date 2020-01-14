@@ -41,7 +41,6 @@ export default {
     getPin() {
       if (!this.email) {
         this.$message({
-          showClose: true,
           message: '请输入邮箱',
           type: 'error'
         });
@@ -49,7 +48,6 @@ export default {
       }
       if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/).test(this.email)) {
         this.$message({
-          showClose: true,
           message: '邮箱不合法',
           type: 'error'
         });
@@ -66,7 +64,6 @@ export default {
         }, 1000)
       } else {
         this.$message({
-          showClose: true,
           message: `请稍后重试（${this.countdownNum}s）`,
           type: 'error'
         });
@@ -76,7 +73,6 @@ export default {
     resetPw() {
       if (!this.email) {
         this.$message({
-          showClose: true,
           message: '请输入邮箱',
           type: 'error'
         });
@@ -84,7 +80,6 @@ export default {
       }
       if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/).test(this.email)) {
         this.$message({
-          showClose: true,
           message: '邮箱不合法',
           type: 'error'
         });
@@ -92,7 +87,6 @@ export default {
       }
       if (!this.pin) {
         this.$message({
-          showClose: true,
           message: '请输入验证码',
           type: 'error'
         });
@@ -100,7 +94,6 @@ export default {
       }
       if (!this.password) {
         this.$message({
-          showClose: true,
           message: '请输入密码',
           type: 'error'
         });
@@ -108,7 +101,6 @@ export default {
       }
       if (this.password !== this.againPassword) {
         this.$message({
-          showClose: true,
           message: '两次密码不一致',
           type: 'error'
         });
