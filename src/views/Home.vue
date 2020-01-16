@@ -4,14 +4,12 @@
       <router-link to="/">
         <h2>云物</h2>
       </router-link>
-      
-        <el-dropdown :show-timeout="800">
-          <router-link to="/user"><span class="el-dropdown-link">39293@qq.com</span></router-link>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>退出登陆</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      
+      <el-dropdown :show-timeout="500">
+        <router-link to="/user"><span class="el-dropdown-link">39293@qq.com</span></router-link>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>退出登陆</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </el-header>
     <el-container class="container">
       <el-aside class="aside">
@@ -59,6 +57,8 @@ export default {
   },
   mounted() {
     this.mountedActive = this.$route.path
+    // eslint-disable-next-line
+    console.log(this.$store.state.auth);
   },
   watch: {
     '$route': function() {
@@ -80,19 +80,9 @@ export default {
 
 <style lang="scss">
 @import '../globel';
-// body {
-//   height: 100vh;
-//   width: 100vw;
-// }
 .home {
   height: 100vh;
   width: 100vw;
-  // background-color: $color-main;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
-  // right: 0;
-  // bottom: 0;
 }
 .header {
   background-color: $color-main;

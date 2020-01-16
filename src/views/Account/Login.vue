@@ -1,31 +1,26 @@
 <template>
   <div>
-    <el-container class="container">
-      <el-main class="main">
-        <el-row type="flex" justify="center" class="row">
-          <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="5">
-            <el-card class="card" shadow="hover">
-              <div slot="header">
-                <span>登陆</span>
-                <router-link to="/register">
-                  <el-link class="go-register" type="primary">去注册</el-link>
-                </router-link>
-              </div>
-              <el-input class="margin-bottom" placeholder="邮箱" v-model.trim="email" clearable autofocus="true" maxlength="80"></el-input>
-              <el-input placeholder="密码" v-model.trim="password" show-password maxlength="16" @keyup.enter.native="login"></el-input>
-              <div class="forget-pw">
-                <el-link class="margin-bottom" type="primary" @click="$router.push('/forget_pw')">忘记密码</el-link>
-              </div>
-              <el-button type="primary" class="button" :loading="loading" @click="login">{{loading ? '登陆中' : '登陆'}}</el-button>
-            </el-card>
-          </el-col>
-        </el-row>
-      </el-main>
-    </el-container>
+    <account>
+      <template v-slot:header>
+        <span>登陆</span>
+        <router-link to="/register" replace>
+          <el-link class="go-register" type="primary">去注册</el-link>
+        </router-link>
+      </template>
+      <template v-slot:main>
+        <el-input class="margin-bottom" placeholder="邮箱" v-model.trim="email" clearable autofocus="true" maxlength="80"></el-input>
+        <el-input placeholder="密码" v-model.trim="password" show-password maxlength="16" @keyup.enter.native="login"></el-input>
+        <div class="forget-pw">
+          <el-link class="margin-bottom" type="primary" @click="$router.replace('/forget_pw')">忘记密码</el-link>
+        </div>
+        <el-button type="primary" class="button" :loading="loading" @click="login">{{loading ? '登陆中' : '登陆'}}</el-button>
+      </template>
+    </account>
   </div>
 </template>
 
 <script>
+import account from '../../components/Account'
 export default {
   data() {
     return {
@@ -33,6 +28,9 @@ export default {
       password: '',
       loading: false
     }
+  },
+  components: {
+    account
   },
   methods: {
     login() {
@@ -70,8 +68,9 @@ export default {
             message: `登陆成功`,
             type: 'success'
           });
+          this.$store.commit('setAuth', res.data)
           setTimeout(() => {
-            // this.$router.push('login')
+            this.$router.replace('/')
           }, 3000);
         } else {
           this.$message({
@@ -107,21 +106,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../globel";
-.container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  .main {
-    position: relative;
-    background-color: $color-main;
-    .row {
-      height: 100%;
-      align-items: center;
-    }
-  }
-}
 .margin-bottom {
   margin-top: 4px;
   margin-bottom: 28px;
