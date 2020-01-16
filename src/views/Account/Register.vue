@@ -120,7 +120,7 @@ export default {
   bottom: 0;
   .main {
     position: relative;
-    background-color: $color-account-main;
+    background-color: $color-main;
     .row {
       height: 100%;
       align-items: center;
