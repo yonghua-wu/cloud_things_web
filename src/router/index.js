@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
+import { Message } from 'element-ui'
 import Home from '../views/Home.vue'
 import Login from '../views/Account/Login.vue'
 import Register from '../views/Account/Register.vue'
@@ -13,23 +15,26 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
     component: Home,
     children: [
       {
         path: '',
+        name: 'home',
         component: Overview
       },
       {
         path: '/things',
+        name: 'things',
         component: Things
       },
       {
         path: '/document',
+        name: 'document',
         component: Document
       },
       {
         path: '/user',
+        name: 'user',
         component: User
       }
     ]
@@ -53,6 +58,29 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  
+  // eslint-disable-next-line
+  // console.log('to:', to)
+  // eslint-disable-next-line
+  // console.log('from:', from)
+  if (['login', 'register', 'forget_pw'].indexOf(to.name) !== -1) {
+    next()
+  } else {
+    // eslint-disable-next-line
+    // console.log(store)
+    if (store.state.auth && store.state.auth.accessToken) {
+      next()
+    } else {
+      Message.error('请先登陆')
+      next({
+        name: 'login',
+        replace: true
+      })
+    }
+  }
 })
 
 export default router

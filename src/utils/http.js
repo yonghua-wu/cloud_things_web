@@ -6,14 +6,16 @@ let sso = axios.create({
   baseURL: config.HOST + config.SSO_PATH
 })
 // 请求拦截器
-sso.interceptors.request.use(function (config) {
+sso.interceptors.request.use(function (req) {
   // eslint-disable-next-line
-  console.log(config)
-  let methodURL = config.method + ':' + config.url
+  console.log('sso request:', req)
+  // eslint-disable-next-line
+  console.log('token:', vue.$store)
+  let methodURL = req.method + ':' + req.url
   if (config.SSO_RULEOUT.indexOf(methodURL) === -1) {
-    config.headers.Authorization = vue.$store.state.auth.accessToken || ''
+    req.headers.Authorization = vue.$store.state.auth.accessToken || ''
   }
-  return config
+  return req
 }, function (error) {
   return Promise.reject(error)
 })
@@ -37,14 +39,14 @@ sso.interceptors.response.use(function (response) {
 let ct = axios.create({
   baseURL: config.HOST + config.CLOUDTHINGD_PATH
 })
-ct.interceptors.request.use(function (config) {
+ct.interceptors.request.use(function (req) {
   // eslint-disable-next-line
-  console.log(config)
-  let methodURL = config.method + ':' + config.url
+  console.log(req)
+  let methodURL = req.method + ':' + req.url
   if (config.CT_RULEOUT.indexOf(methodURL) === -1) {
-    config.headers.Authorization = vue.$store.state.auth.accessToken || ''
+    req.headers.Authorization = vue.$store.state.auth.accessToken || ''
   }
-  return config
+  return req
 }, function (error) {
   return Promise.reject(error)
 })

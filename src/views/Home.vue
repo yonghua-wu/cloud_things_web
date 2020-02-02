@@ -4,10 +4,10 @@
       <router-link to="/">
         <h2>云物</h2>
       </router-link>
-      <el-dropdown :show-timeout="500">
-        <router-link to="/user"><span class="el-dropdown-link">39293@qq.com</span></router-link>
+      <el-dropdown :show-timeout="300" @command="handleCommand">
+        <router-link to="/user"><span class="el-dropdown-link">{{email}}<i class="el-icon-arrow-down el-icon--right"></i></span></router-link>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出登陆</el-dropdown-item>
+          <el-dropdown-item command="login_out">退出登陆</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
@@ -52,13 +52,15 @@
 export default {
   data() {
     return {
-      mountedActive: ''
+      mountedActive: '',
+      email: ''
     }
   },
   mounted() {
     this.mountedActive = this.$route.path
     // eslint-disable-next-line
     console.log(this.$store.state.auth);
+    this.email = this.$store.state.userInfo.email
   },
   watch: {
     '$route': function() {
@@ -73,6 +75,23 @@ export default {
     handleClose(key, keyPath) {
       // eslint-disable-next-line
       console.log(key, keyPath);
+    },
+    handleCommand(command) {
+      switch(command) {
+        case 'login_out':
+          this.$store.commit('resetAuth')
+          this.$store.commit('resetUserInfo')
+          this.$message({
+            message: `已退出登陆`,
+            type: 'success'
+          })
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 2000);
+          break;
+        default:
+          break
+      }
     }
   }
 }

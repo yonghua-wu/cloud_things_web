@@ -69,9 +69,10 @@ export default {
             type: 'success'
           });
           this.$store.commit('setAuth', res.data)
+          this.$store.commit('setUserInfo', {email: data.email})
           setTimeout(() => {
             this.$router.replace('/')
-          }, 3000);
+          }, 2000);
         } else {
           this.$message({
             message: `登陆失败（${res.status}）`,
