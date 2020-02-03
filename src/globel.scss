@@ -1,2 +1,6 @@
 $color-main: #3e3e3e;
-$color-text-main: #eee
+$color-text-main: #eee;
+@mixin features-title {
+  font-size: 20px;
+  padding-bottom: 10px;
+}

@@ -40,7 +40,7 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main class="main">
+      <el-main class="main" id="main">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -87,7 +87,7 @@ export default {
           })
           setTimeout(() => {
             this.$router.push('/login')
-          }, 2000);
+          }, 1000);
           break;
         default:
           break
