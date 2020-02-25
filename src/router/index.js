@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Account/Login.vue'
 import Register from '../views/Account/Register.vue'
 import Overview from '../views/Features/Overview.vue'
-import Things from '../views/Features/Things.vue'
+import Things from '../views/Features/Things/index.vue'
 import Document from '../views/Features/Document.vue'
 import User from '../views/Features/User.vue'
 
@@ -61,7 +61,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  
   // eslint-disable-next-line
   // console.log('to:', to)
   // eslint-disable-next-line
