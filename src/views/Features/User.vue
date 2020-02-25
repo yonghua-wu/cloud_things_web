@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       userInfo: {},
       networkErr: false,
@@ -57,32 +57,32 @@ export default {
       newTel: ''
     }
   },
-  mounted() {
+  mounted () {
     this.userInfo = this.$store.state.userInfo
-    if (! ('id' in this.userInfo)) {
+    if (!('id' in this.userInfo)) {
       this.loadUserInfo()
     }
   },
   methods: {
-    loading(text) {
+    loading (text) {
       return this.$loading({
         target: document.getElementById('main'),
         lock: true,
         text: text,
         spinner: 'el-icon-loading'
-      });
+      })
     },
-    loadUserInfo() {
+    loadUserInfo () {
       const loading = this.loading('加载中')
-      this.$http.sso.get('/user').then( res => {
+      this.$http.sso.get('/user').then(res => {
         // eslint-disable-next-line no-console
         console.log(res.data)
         this.userInfo = res.data
         this.$store.commit('setUserInfo', res.data)
-        loading.close();
+        loading.close()
       })
     },
-    loginOut() {
+    loginOut () {
       this.$store.commit('resetAuth')
       this.$store.commit('resetUserInfo')
       this.$message({
@@ -91,10 +91,10 @@ export default {
       })
       setTimeout(() => {
         this.$router.push('/login')
-      }, 1000);
+      }, 1000)
     },
-    showInput(from) {
-      switch(from) {
+    showInput (from) {
+      switch (from) {
         case 'nickname':
           this.isSetNickname = true
           this.newNickname = this.userInfo.nickname || ''
@@ -107,44 +107,44 @@ export default {
           break
       }
     },
-    cancal(e) {
+    cancal (e) {
       if (e.target.localName !== 'input') {
         this.isSetNickname = false
         this.isSetTel = false
       }
     },
-    changeNickname() {
+    changeNickname () {
       const loading = this.loading('修改中')
       this.$http.sso.patch('/user', {
         id: this.userInfo.id,
         nickname: this.newNickname
-      }).then( res => {
+      }).then(res => {
         // eslint-disable-next-line no-console
         console.log(res.data)
         this.userInfo.nickname = res.data.nickname
         this.isSetNickname = false
         loading.close()
-      }).catch( () => {
+      }).catch(() => {
         this.isSetNickname = false
         loading.close()
       })
     },
-    changeTel() {
+    changeTel () {
       const loading = this.loading('修改中')
       this.$http.sso.patch('/user', {
         id: this.userInfo.id,
         tel: this.newTel
-      }).then( res => {
+      }).then(res => {
         // eslint-disable-next-line no-console
         console.log(res.data)
         this.userInfo.tel = res.data.tel
         this.isSetTel = false
         loading.close()
-      }).catch( () => {
+      }).catch(() => {
         this.isSetTel = false
         loading.close()
       })
-    },
+    }
   }
 }
 </script>

@@ -23,7 +23,7 @@
 <script>
 import account from '../../components/Account'
 export default {
-  data() {
+  data () {
     return {
       email: '',
       pin: '',
@@ -36,25 +36,25 @@ export default {
     account
   },
   methods: {
-    getPin() {
+    getPin () {
       if (!this.email) {
         this.$message({
           message: '请输入邮箱',
           type: 'error'
-        });
+        })
         return
       }
       if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/).test(this.email)) {
         this.$message({
           message: '邮箱不合法',
           type: 'error'
-        });
+        })
         return
       }
       if (this.countdownNum === 0) {
-        let that = this
+        const that = this
         that.countdownNum = 120
-        setTimeout(function countdown() {
+        setTimeout(function countdown () {
           if (that.countdownNum !== 0) {
             that.countdownNum--
             setTimeout(countdown, 1000)
@@ -64,44 +64,44 @@ export default {
         this.$message({
           message: `请稍后重试（${this.countdownNum}s）`,
           type: 'error'
-        });
+        })
         return
       }
     },
-    resetPw() {
+    resetPw () {
       if (!this.email) {
         this.$message({
           message: '请输入邮箱',
           type: 'error'
-        });
+        })
         return
       }
       if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/).test(this.email)) {
         this.$message({
           message: '邮箱不合法',
           type: 'error'
-        });
+        })
         return
       }
       if (!this.pin) {
         this.$message({
           message: '请输入验证码',
           type: 'error'
-        });
+        })
         return
       }
       if (!this.password) {
         this.$message({
           message: '请输入密码',
           type: 'error'
-        });
+        })
         return
       }
       if (this.password !== this.againPassword) {
         this.$message({
           message: '两次密码不一致',
           type: 'error'
-        });
+        })
         return
       }
     }

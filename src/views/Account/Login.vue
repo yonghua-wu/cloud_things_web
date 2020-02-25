@@ -22,7 +22,7 @@
 <script>
 import account from '../../components/Account'
 export default {
-  data() {
+  data () {
     return {
       email: '',
       password: '',
@@ -33,70 +33,70 @@ export default {
     account
   },
   methods: {
-    login() {
+    login () {
       if (!this.email) {
         this.$message({
           message: '请输入邮箱',
           type: 'error'
-        });
+        })
         return
       }
       if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/).test(this.email)) {
         this.$message({
           message: '邮箱不合法',
           type: 'error'
-        });
+        })
         return
       }
       if (!this.password) {
         this.$message({
           message: '请输入密码',
           type: 'error'
-        });
+        })
         return
       }
-      let data = {
+      const data = {
         email: this.email,
         password: this.password
       }
       this.loading = true
-      this.$http.sso.post('/auth', data).then( res => {
+      this.$http.sso.post('/auth', data).then(res => {
         // eslint-disable-next-line
         console.log('normal', res)
         if (res.status === 200) {
           this.$message({
             message: `登陆成功`,
             type: 'success'
-          });
+          })
           this.$store.commit('setAuth', res.data)
-          this.$store.commit('setUserInfo', {email: data.email})
+          this.$store.commit('setUserInfo', { email: data.email })
           setTimeout(() => {
             this.$router.replace('/')
-          }, 2000);
+          }, 2000)
         } else {
           this.$message({
             message: `登陆失败（${res.status}）`,
             type: 'error'
-          });
+          })
         }
         setTimeout(() => {
           this.loading = false
-        }, 3000);
-      }).catch( err => {
+        }, 3000)
+      }).catch(err => {
         setTimeout(() => {
           this.loading = false
-        }, 3000);
+        }, 3000)
         if (err && err.response && err.response.status === 401) {
           this.$message({
             message: '账号或密码错误',
             type: 'error'
-          });
+          })
           return
         } else {
           this.$message({
             message: '网络异常',
             type: 'error'
-          });
+          })
           return
         }
       })

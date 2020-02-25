@@ -50,34 +50,34 @@
 <script>
 
 export default {
-  data() {
+  data () {
     return {
       mountedActive: '',
       email: ''
     }
   },
-  mounted() {
+  mounted () {
     this.mountedActive = this.$route.path
     // eslint-disable-next-line
     console.log(this.$store.state.auth);
     this.email = this.$store.state.userInfo.email
   },
   watch: {
-    '$route': function() {
+    '$route': function () {
       this.mountedActive = this.$route.path
     }
   },
   methods: {
-    handleOpen(key, keyPath) {
+    handleOpen (key, keyPath) {
       // eslint-disable-next-line
       console.log(key, keyPath);
     },
-    handleClose(key, keyPath) {
+    handleClose (key, keyPath) {
       // eslint-disable-next-line
       console.log(key, keyPath);
     },
-    handleCommand(command) {
-      switch(command) {
+    handleCommand (command) {
+      switch (command) {
         case 'login_out':
           this.$store.commit('resetAuth')
           this.$store.commit('resetUserInfo')
@@ -87,8 +87,8 @@ export default {
           })
           setTimeout(() => {
             this.$router.push('/login')
-          }, 1000);
-          break;
+          }, 1000)
+          break
         default:
           break
       }

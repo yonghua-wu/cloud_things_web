@@ -20,7 +20,7 @@
 <script>
 import account from '../../components/Account'
 export default {
-  data() {
+  data () {
     return {
       email: '',
       password: '',
@@ -32,13 +32,13 @@ export default {
     account
   },
   methods: {
-    register() {
+    register () {
       if (!this.email) {
         this.$message({
           showClose: true,
           message: '请输入邮箱',
           type: 'error'
-        });
+        })
         return
       }
       if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/).test(this.email)) {
@@ -46,7 +46,7 @@ export default {
           showClose: true,
           message: '邮箱不合法',
           type: 'error'
-        });
+        })
         return
       }
       if (!this.password) {
@@ -54,7 +54,7 @@ export default {
           showClose: true,
           message: '请输入密码',
           type: 'error'
-        });
+        })
         return
       }
       if (this.password !== this.againPassword) {
@@ -62,25 +62,25 @@ export default {
           showClose: true,
           message: '两次密码不一致',
           type: 'error'
-        });
+        })
         return
       }
-      let data = {
+      const data = {
         email: this.email,
         password: this.password
       }
       this.loading = true
-      this.$http.sso.post('/user', data).then( res => {
+      this.$http.sso.post('/user', data).then(res => {
         // eslint-disable-next-line
         console.log('normal', res)
         if (res.status === 201) {
           this.$message({
             message: `账户（${res.data.email}）创建成功`,
             type: 'success'
-          });
+          })
           setTimeout(() => {
             this.$router.replace('login')
-          }, 3000);
+          }, 3000)
         } else {
           this.$message({
             showClose: true,
@@ -90,16 +90,16 @@ export default {
         }
         setTimeout(() => {
           this.loading = false
-        }, 3000);
-      }).catch( err => {
+        }, 3000)
+      }).catch(err => {
         setTimeout(() => {
           this.loading = false
-        }, 3000);
+        }, 3000)
         if (err && err.response && err.response.status === 409) {
           this.$message({
             message: '账户已存在',
             type: 'error'
-          });
+          })
           return
         }
       })

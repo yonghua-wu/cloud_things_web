@@ -20,56 +20,56 @@ import { Message } from 'element-ui'
 //   return ''
 // }
 
-function refreshAuth() {
+function refreshAuth () {
   return new Promise((resolve, reject) => {
     axios({
-      url: config.HOST + config.SSO_PATH + '/auth',
+      url: config.SSO.BASE_URL + '/auth',
       method: 'patch',
       data: {
         refresh_token: store.state.auth.refreshToken // 携带 refresh token
       }
-    }).then( res => {
+    }).then(res => {
       // eslint-disable-next-line no-console
       console.log(res)
       store.commit('setAccessToken', res.data.access_token) // 缓存新的 access token
       resolve(res)
-    }).catch( err => {
+    }).catch(err => {
       if (err && err.response && err.response.status === 401) {
         Message({
           message: '验证失败，请重新登陆',
           type: 'error'
-        });
+        })
         store.commit('resetAuth') // 重置 auth
         router.replace('/login')
       } else {
         this.$message({
           message: '网络异常',
           type: 'error'
-        });
+        })
       }
       reject(err)
     })
   })
 }
 
-async function net(config) {
+async function net (config) {
   let req
   try {
     req = await axios(config)
   } catch (err) {
     if (err && err.response && err.response.status === 401) {
       try {
-        let refresh = await refreshAuth()
+        const refresh = await refreshAuth()
         config.headers.Authorization = refresh.data.access_token
         req = await axios(config)
-      } catch(err) {
+      } catch (err) {
         throw err
       }
     } else {
       this.$message({
         message: '网络异常',
         type: 'error'
-      });
+      })
       throw err
     }
   }
@@ -81,17 +81,19 @@ class Request {
    * 发送请求
    * @param {String} server 选择的服务（sso，ct）
    */
-  constructor(server) {
+  constructor (server) {
     switch (server) {
       case 'sso':
-        this.fullUrl = config.HOST + config.SSO_PATH
-        break;
+        // this.fullUrl = config.HOST + config.SSO_PATH
+        this.fullUrl = config.SSO.BASE_URL
+        break
       case 'ct':
-        this.fullUrl = config.HOST + config.CLOUDTHINGS_PATH
-        break;
+        // this.fullUrl = config.HOST + config.CLOUDTHINGS_PATH
+        this.fullUrl = config.CT.BASE_URL
+        break
       default :
         this.fullUrl = config.HOST + server
-        break;
+        break
     }
   }
   /**
@@ -99,8 +101,8 @@ class Request {
    * @param {String} url 请求地址
    * @param {Object} data params中的传参
    */
-  get(url, data = {}) {
-    let config = {
+  get (url, data = {}) {
+    const config = {
       url: this.fullUrl + url,
       method: 'get',
       params: data,
@@ -108,7 +110,7 @@ class Request {
         'Authorization': store.state.auth.accessToken
       }
     }
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line
     console.log(config)
     return net(config)
   }
@@ -117,10 +119,10 @@ class Request {
    * @param {String} url 请求地址
    * @param {Object} data data中的传参
    */
-  post(url, data = {}) {
-    //eslint-disable-next-line
+  post (url, data = {}) {
+    // eslint-disable-next-line
     console.log(store)
-    let config = {
+    const config = {
       url: this.fullUrl + url,
       method: 'post',
       data: data,
@@ -139,8 +141,8 @@ class Request {
    * @param {String} url 请求地址
    * @param {Object} data data中的传参
    */
-  put(url, data = {}) {
-    let config = {
+  put (url, data = {}) {
+    const config = {
       url: this.fullUrl + url,
       method: 'put',
       data: data,
@@ -155,8 +157,8 @@ class Request {
    * @param {String} url 请求地址
    * @param {Object} data data中的传参
    */
-  patch(url, data = {}) {
-    let config = {
+  patch (url, data = {}) {
+    const config = {
       url: this.fullUrl + url,
       method: 'patch',
       data: data,
@@ -171,8 +173,8 @@ class Request {
    * @param {String} url 请求地址
    * @param {Object} data data中的传参
    */
-  del(url, data = {}) {
-    let config = {
+  del (url, data = {}) {
+    const config = {
       url: this.fullUrl + url,
       method: 'delete',
       data: data,
@@ -184,8 +186,8 @@ class Request {
   }
 }
 
-let sso = new Request('sso')
-let ct = new Request('ct')
+const sso = new Request('sso')
+const ct = new Request('ct')
 
 export default {
   sso,
