@@ -28,6 +28,22 @@ const routes = [
         component: Things
       },
       {
+        path: '/things/model/:id',
+        name: 'model',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Features/Things/model.vue'),
+        meta: {
+          keepAlive: false // 不需要缓存
+        }
+      },
+      {
+        path: '/things/device/:id',
+        name: 'device',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Features/Things/device.vue'),
+        meta: {
+          keepAlive: false // 不需要缓存
+        }
+      },
+      {
         path: '/document',
         name: 'document',
         component: Document

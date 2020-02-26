@@ -41,7 +41,10 @@
         </el-menu>
       </el-aside>
       <el-main class="main" id="main">
-        <router-view></router-view>
+          <router-view v-if="$route.meta.keepAlive===false"></router-view>
+          <keep-alive>
+            <router-view v-if="$route.meta.keepAlive!==false"></router-view>
+          </keep-alive>
       </el-main>
     </el-container>
   </div>

@@ -3,8 +3,11 @@
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
         <span class="card-title">模型</span>
-        <el-button style="float: right; padding: 3px 0" type="text">
+        <el-button style="float: right; padding: 3px 0" type="text" @click="goModelPage('add')">
           <i class="el-icon-plus"></i> 添加模型
+        </el-button>
+        <el-button style="float: right; padding: 3px 15px 3px 0px" type="text" @click="loadData">
+          <i class="el-icon-refresh"></i> 刷新
         </el-button>
       </div>
       <div slot="body">123</div>
@@ -53,7 +56,7 @@
               size="mini"
               type="primary"
               plain
-              @click="modelEdit(scope.row.id)">详情</el-button>
+              @click="goModelPage(scope.row.id)">详情</el-button>
             <el-button
               size="mini"
               type="danger"
@@ -69,8 +72,11 @@
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
         <span class="card-title">设备</span>
-        <el-button style="float: right; padding: 3px 0" type="text">
+        <el-button style="float: right; padding: 3px 0" type="text" @click="goDevicePage('add')">
           <i class="el-icon-plus"></i> 添加设备
+        </el-button>
+        <el-button style="float: right; padding: 3px 15px 3px 0px" type="text" @click="loadData">
+          <i class="el-icon-refresh"></i> 刷新
         </el-button>
       </div>
       <el-table
@@ -175,23 +181,22 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.loadData()
+  },
   computed: {
-    viewModels () {
-      if (this.viewAllModels) {
-        return this.modelList
-      } else {
-        return this.modelList.slice(0, 5)
-      }
-    },
-    viewDevices () {
-      if (this.viewAllDevices) {
-        return this.deviceList
-      } else {
-        return this.deviceList.slice(0, 5)
-      }
-    }
   },
   methods: {
+    loadData () {
+      const loading = this.$loadingMain('加载中')
+      const loadModels = this.$http.ct.get('/models')
+      const loadDevices = this.$http.ct.get('/devices')
+      Promise.all([loadModels, loadDevices]).then(res => {
+        this.modelList = (res[0].data && res[0].data.list) || []
+        this.deviceList = (res[1].data && res[1].data.list) || []
+        loading.close()
+      })
+    },
     modelEdit (id) {
       // eslint-disable-next-line
       console.log('edit:', id)
@@ -207,6 +212,12 @@ export default {
     deviceDelete (id) {
       // eslint-disable-next-line
       console.log('delete:', id)
+    },
+    goModelPage (param) {
+      this.$router.push('/things/model/' + param)
+    },
+    goDevicePage (param) {
+      this.$router.push('/things/device/' + param)
     },
     timeFormat (...params) {
       return moment(new Date(params[2])).format('YYYY-MM-DD HH:mm:ss')
