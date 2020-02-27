@@ -139,7 +139,7 @@
               size="mini"
               type="primary"
               plain
-              @click="modelEdit(scope.row.id)">详情</el-button>
+              @click="goDevicePage(scope.row.id)">详情</el-button>
             <el-button
               size="mini"
               type="danger"
@@ -160,25 +160,8 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      modelList: [
-        {
-          'id': 3213,
-          'name': '1',
-          'description': 'sss',
-          'createdAt': 1582275662000,
-          'updatedAt': 1582290811000
-        }
-      ],
-      deviceList: [
-        {
-          'id': 1,
-          'name': 'test',
-          'description': 'ccc',
-          'createdAt': 1582635432000,
-          'updatedAt': 1582635432000,
-          'connected': false
-        }
-      ]
+      modelList: [],
+      deviceList: []
     }
   },
   mounted () {
@@ -204,6 +187,12 @@ export default {
     modelDelete (id) {
       // eslint-disable-next-line
       console.log('delete:', id)
+      this.$http.ct.del('/models/' + id).then(() => {
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        })
+      })
     },
     deviceEdit (id) {
       // eslint-disable-next-line
@@ -212,6 +201,12 @@ export default {
     deviceDelete (id) {
       // eslint-disable-next-line
       console.log('delete:', id)
+      this.$http.ct.del('/devices/' + id).then(() => {
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        })
+      })
     },
     goModelPage (param) {
       this.$router.push('/things/model/' + param)

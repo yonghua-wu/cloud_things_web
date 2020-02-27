@@ -36,6 +36,14 @@ const routes = [
         }
       },
       {
+        path: '/things/device/add',
+        name: 'device',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Features/Things/addDevice.vue'),
+        meta: {
+          keepAlive: false // 不需要缓存
+        }
+      },
+      {
         path: '/things/device/:id',
         name: 'device',
         component: () => import(/* webpackChunkName: "about" */ '../views/Features/Things/device.vue'),
